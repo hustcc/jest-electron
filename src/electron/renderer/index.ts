@@ -1,8 +1,11 @@
 import { ipcRenderer, remote } from 'electron';
 import runTest from 'jest-runner/build/runTest';
 import { EventsEnum } from '../../utils/constant';
-import { Args } from '../interface';
 import { getResolver, fail } from './uitl';
+
+export type Args = {
+  readonly interactive?: boolean;
+}
 
 // 通过 hash 将配置传递过来
 let args: Args = {};
