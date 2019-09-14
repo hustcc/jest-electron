@@ -1,8 +1,7 @@
-import { Version, Package } from '../src';
+import { name } from '../src';
 
 describe('jest-electron', () => {
   test('export', () => {
-    expect(Version).toBe('0.1.2');
-    expect(Package).toBe('jest-electron');
+    expect(name).toBe('jest-electron');
   });
 });
