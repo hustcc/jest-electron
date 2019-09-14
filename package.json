@@ -1,0 +1,50 @@
+{
+  "name": "jest-electron",
+  "version": "0.1.2",
+  "description": "Easiest way to run jest unit test cases in electron.",
+  "main": "index.js",
+  "files": [
+    "lib",
+    "runner.js",
+    "environment.js"
+  ],
+  "scripts": {
+    "test-live": "INTERACTIVE=1 jest",
+    "test": "jest",
+    "html": "copyfiles -u 1 src/electron/**/*.html lib",
+    "build": "rimraf lib && tsc && npm run html"
+  },
+  "jest": {
+    "runner": "./runner",
+    "testEnvironment": "./environment",
+    "preset": "ts-jest",
+    "collectCoverage": true,
+    "testRegex": "(/__tests__/.*\\.(test|spec))\\.ts$",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ]
+  },
+  "dependencies": {
+    "electron": "^6.0.7",
+    "jest-haste-map": "^24.9.0",
+    "jest-message-util": "^24.9.0",
+    "jest-mock": "^24.9.0",
+    "jest-resolve": "^24.9.0",
+    "jest-runner": "^24.9.0",
+    "jest-runtime": "^24.9.0",
+    "jest-util": "^24.9.0",
+    "throat": "^5.0.0",
+    "tslib": "^1.10.0"
+  },
+  "peerDependencies": {
+    "jest": "^24.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "copyfiles": "^2.1.1",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.6.2"
+  }
+}
