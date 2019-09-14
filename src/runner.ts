@@ -1,5 +1,5 @@
 import throat from 'throat';
-import { ProcPool } from './pool';
+import { Electron } from './electron/proc';
 
 const isInteractive = (): boolean => {
   return process.env.INTERACTIVE === '1';
@@ -12,7 +12,7 @@ export default class ElectronRunner {
   private _globalConfig: any;
   private _interactive: boolean;
 
-  private procPool: ProcPool;
+  private electronProc: Electron;
 
   constructor(globalConfig: any) {
     this._globalConfig = globalConfig;
@@ -28,17 +28,6 @@ export default class ElectronRunner {
     return isWatch ? Math.ceil(concurrency / 2) : concurrency;
   }
 
-  /**
-   * pool size
-   * can be optimized
-   * worker 启动时间也挺长，所以一个自测值，使用 concurrency / 4
-   * @param concurrency
-   * @param testSize
-   */
-  private getPoolSize(concurrency, testSize): number {
-    return this._interactive || testSize < 10 ? 1 : Math.ceil(concurrency / 4)
-  }
-
   async runTests(
     tests: Array<any>,
     watcher: any,
@@ -46,28 +35,28 @@ export default class ElectronRunner {
     onResult: (Test, TestResult) => void,
     onFailure: (Test, Error) => void,
   ) {
-    const testSize = tests.length;
     const concurrency = this.getConcurrency(tests.length);
     // 启动
-    this.procPool = new ProcPool(this.getPoolSize(concurrency, testSize), this._interactive);
+    this.electronProc = new Electron(this._interactive, concurrency);
 
     // 主进程退出，则 electron 也退出
     process.on('exit', () => {
-      this.procPool.flush();
+      this.electronProc.kill();
     });
 
     if (this._interactive) {
-      this.procPool.onClose(() => { process.exit(); });
+      this.electronProc.onClose(() => { process.exit(); });
     }
 
     await Promise.all(
       tests.map(
-        throat(concurrency, async test => {
+        throat(concurrency, async (test, idx) => {
           onStart(test);
+
           const config = test.context.config;
           const globalConfig = this._globalConfig;
 
-          return await this.procPool.runTest({
+          return await this.electronProc.runTest({
             serializableModuleMap: test.context.moduleMap.toJSON(),
             config,
             globalConfig,
@@ -85,7 +74,7 @@ export default class ElectronRunner {
 
     // 如果是非交互，则关闭子进程
     if (!this._interactive) {
-      this.procPool.flush();
+      this.electronProc.kill();
     }
   }
 }
