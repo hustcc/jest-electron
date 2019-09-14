@@ -127,7 +127,7 @@ export class ProcPool {
 
       const listener = (m) => {
         if (m.type === EventsEnum.ProcReady) {
-          proc.off(EventsEnum.ProcMessage, listener);
+          proc.removeListener(EventsEnum.ProcMessage, listener);
           resolve(proc);
         }
       };
@@ -187,7 +187,7 @@ export class ProcPool {
 
         const listener = ({ result, id: resultId, type }) => {
           if (type === EventsEnum.ProcRunTestResult && resultId === id) {
-            proc.off(EventsEnum.ProcMessage, listener);
+            proc.removeListener(EventsEnum.ProcMessage, listener);
             // 返回结果，可以设置为 idle
             this.setIdle(proc, true);
             // 返回结果
