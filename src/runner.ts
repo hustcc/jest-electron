@@ -1,9 +1,10 @@
 import throat from 'throat';
-import { Electron } from './electron/proc';
+import { electronProc } from './electron/proc';
 
 const isDebugMode = (): boolean => {
   return process.env.DEBUG_MODE === '1';
 };
+
 
 /**
  * Runner 类
@@ -11,8 +12,6 @@ const isDebugMode = (): boolean => {
 export default class ElectronRunner {
   private _globalConfig: any;
   private _debugMode: boolean;
-
-  private electronProc: Electron;
 
   constructor(globalConfig: any) {
     this._globalConfig = globalConfig;
@@ -36,16 +35,17 @@ export default class ElectronRunner {
     onFailure: (Test, Error) => void,
   ) {
     const concurrency = this.getConcurrency(tests.length);
-    // 启动
-    this.electronProc = new Electron(this._debugMode, concurrency);
+
+    electronProc.debugMode = this._debugMode;
+    electronProc.concurrency = concurrency;
 
     // 主进程退出，则 electron 也退出
     process.on('exit', () => {
-      this.electronProc.kill();
+      electronProc.kill();
     });
 
     if (this._debugMode) {
-      this.electronProc.onClose(() => { process.exit(); });
+      electronProc.onClose(() => { process.exit(); });
     }
 
     await Promise.all(
@@ -56,7 +56,7 @@ export default class ElectronRunner {
           const config = test.context.config;
           const globalConfig = this._globalConfig;
 
-          return await this.electronProc.runTest({
+          return await electronProc.runTest({
             serializableModuleMap: test.context.moduleMap.toJSON(),
             config,
             globalConfig,
@@ -74,7 +74,7 @@ export default class ElectronRunner {
 
     // 如果是非交互，则关闭子进程
     if (!this._debugMode) {
-      this.electronProc.kill();
+      electronProc.kill();
     }
   }
 }

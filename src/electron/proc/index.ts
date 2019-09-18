@@ -9,8 +9,8 @@ import { delay } from '../../utils/delay';
  * electron 的进程池子
  */
 export class Electron {
-  private debugMode: boolean;
-  private concurrency: number;
+  public debugMode: boolean;
+  public concurrency: number;
 
   private onCloseCallback: Function = () => {};
 
@@ -131,3 +131,5 @@ export class Electron {
     this.onCloseCallback = cb;
   }
 }
+
+export const electronProc: Electron = new Electron();

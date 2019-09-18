@@ -127,7 +127,6 @@ class LargeLocalstorage {
     const length = values.length;
 
     const uuidArray = values.map(() => uuid());
-    global.console.log(uuidArray);
 
     return values.map((value, idx) => {
       // 第一个 id 不变
