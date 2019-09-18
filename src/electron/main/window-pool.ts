@@ -1,12 +1,15 @@
 import * as path from 'path';
 import * as url from 'url';
+import throat from 'throat';
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { EventsEnum } from '../../utils/constant';
 import { delay } from '../../utils/delay';
+import { uuid } from '../../utils/uuid';
 
 type Info = {
   win: BrowserWindow;
   idle: boolean;
+  tests: any[];
 }
 
 /**
@@ -25,6 +28,10 @@ export class WindowPool {
     // debugMode 模式下，只能开一个 win
     this.maxSize = debugMode ? 1 : maxSize;
     this.debugMode = debugMode;
+
+    ipcMain.on(EventsEnum.WebContentsReady, () => {
+      this.runAllTest();
+    });
   }
 
   /**
@@ -68,7 +75,7 @@ export class WindowPool {
     const win = await this.create();
 
     // 放入到 pool 中
-    this.pool.push({ win, idle: true });
+    this.pool.push({ win, idle: true, tests: [] });
 
     return win;
   }
@@ -80,8 +87,8 @@ export class WindowPool {
     return new Promise((resolve, reject) => {
       const winOpts = {
         // 默认大小，应该需要可以定制
-        height: 600,
-        width: 800,
+        height: 800,
+        width: 1024,
         show: this.debugMode,
         focusable: this.debugMode,
         webPreferences: {
@@ -150,6 +157,22 @@ export class WindowPool {
     this.pool[idx].idle = idle;
   }
 
+  private appendTest(win: BrowserWindow, test: any) {
+    const idx = this.pool.findIndex(info => info.win === win);
+
+    this.pool[idx].tests.push(test);
+  }
+
+  /**
+   * 清空单测
+   */
+  public clearSaveTests() {
+    this.pool.forEach(info => {
+      info.tests = [];
+    });
+  }
+
+
   private removeWin(win: BrowserWindow) {
     const idx = this.pool.findIndex((info) => info.win = win);
 
@@ -166,23 +189,38 @@ export class WindowPool {
    * @param id
    * @param test
    */
-  public runTest(id: string, test: any): Promise<any> {
+  public async runTest(id: string, test: any): Promise<any> {
+    const win = await this.get();
+    const result =  await this.run(win, id, test);
+
+    this.appendTest(win, test);
+    return result;
+  }
+
+  private async runAllTest() {
+    this.pool.map(async info => {
+      await Promise.all(info.tests.map(
+        throat(1, async (test: any) => {
+          return await this.run(info.win, uuid(), test);
+        })
+      ));
+    });
+  }
+
+  private async run(win: BrowserWindow, id: string, test: any) {
     return new Promise((resolve, reject) => {
-      // 获取一个空闲的 renderer
-      this.get().then((win) => {
-        this.setIdle(win, false);
+      this.setIdle(win, false);
 
-        // 单测返回之后发送到 proc 中
-        ipcMain.once(id, (event, result) => {
-          // 执行完成，设置为空闲
-          this.setIdle(win, true);
-          // 返回结果
-          resolve({ result, id });
-        });
-
-        // 发送过去到 renderer 中执行
-        win.webContents.send(EventsEnum.StartRunTest, test, id);
+      // 单测返回之后发送到 proc 中
+      ipcMain.once(id, (event, result) => {
+        // 执行完成，设置为空闲
+        this.setIdle(win, true);
+        // 返回结果
+        resolve({ result, id });
       });
+
+      // 发送过去到 renderer 中执行
+      win.webContents.send(EventsEnum.StartRunTest, test, id);
     });
   }
 }

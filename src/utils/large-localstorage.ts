@@ -56,7 +56,7 @@ class LargeLocalstorage {
    */
   setItem(k: string, v: any) {
     // 先清除
-    this.removeItem(k);
+    // this.removeItem(k);
 
     const packages = this.packages(k, v);
 

@@ -4,6 +4,7 @@ import * as Runtime from 'jest-runtime';
 import * as HasteMap from 'jest-haste-map';
 import * as Resolver from 'jest-resolve';
 import { formatExecError, separateMessageFromStack } from 'jest-message-util';
+import runTest from 'jest-runner/build/runTest';
 
 const resolvers = new Map<string, Resolver>();
 
@@ -53,3 +54,16 @@ export const fail = (testPath: string, err: Error, config: any, globalConfig: an
     openHandles: [],
   };
 };
+
+/**
+ * 运行单测
+ * @param test
+ */
+export async function run(test) {
+  return await runTest(
+    test.path,
+    test.globalConfig,
+    test.config,
+    getResolver(test.config, test.serializableModuleMap),
+  );
+}

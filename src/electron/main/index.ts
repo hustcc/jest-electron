@@ -21,6 +21,9 @@ app.on('ready', () => {
       windowPool.runTest(id, test).then(({ result, id }) => {
         process.send({ result, id, type: EventsEnum.ProcRunTestResult });
       });
+    } else if (EventsEnum.ProcInitialWin) {
+      windowPool.clearSaveTests();
+      process.send({ type: EventsEnum.ProcInitialWinEnd });
     } else {
       console.error('Invalid message type', type);
     }

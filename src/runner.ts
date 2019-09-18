@@ -48,6 +48,8 @@ export default class ElectronRunner {
       electronProc.onClose(() => { process.exit(); });
     }
 
+    await electronProc.initialWin();
+
     await Promise.all(
       tests.map(
         throat(concurrency, async (test, idx) => {

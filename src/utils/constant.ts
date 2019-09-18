@@ -5,4 +5,6 @@ export enum EventsEnum {
   ProcRunTestResult = 'ProcRunTestResult',
   WebContentsReady = 'WebContentsReady',
   StartRunTest = 'StartRunTest',
+  ProcInitialWin = 'ProcInitialWin',
+  ProcInitialWinEnd = 'ProcInitialWinEnd',
 }

@@ -104,7 +104,6 @@ export class Electron {
     const id = uuid();
 
     return new Promise((resolve, reject) => {
-      // 获取一个空闲的 proc
       this.get().then((proc) => {
         const listener = ({ result, id: resultId, type }) => {
           if (type === EventsEnum.ProcRunTestResult && resultId === id) {
@@ -121,6 +120,24 @@ export class Electron {
         proc.send({ type: EventsEnum.ProcRunTest, test, id });
       });
     });
+  }
+
+  public initialWin(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.get().then((proc) => {
+        const listener = ({ type }) => {
+          if (type === EventsEnum.ProcInitialWinEnd) {
+            proc.removeListener(EventsEnum.ProcMessage, listener);
+            resolve();
+          }
+        };
+
+        proc.on(EventsEnum.ProcMessage, listener);
+
+        proc.send({ type: EventsEnum.ProcInitialWin });
+      });
+
+    })
   }
 
   /**

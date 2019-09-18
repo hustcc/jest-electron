@@ -1,7 +1,6 @@
 import { ipcRenderer, remote } from 'electron';
-import runTest from 'jest-runner/build/runTest';
 import { EventsEnum } from '../../utils/constant';
-import { getResolver, fail } from './uitl';
+import { fail, run } from './uitl';
 
 export type Args = {
   readonly debugMode?: boolean;
@@ -23,12 +22,7 @@ if (debugMode) {
 // 开始跑单测
 ipcRenderer.on(EventsEnum.StartRunTest, async (event, test, id) => {
   try {
-    const result = await runTest(
-      test.path,
-      test.globalConfig,
-      test.config,
-      getResolver(test.config, test.serializableModuleMap),
-    );
+    const result = await run(test);
 
     ipcRenderer.send(id, result);
   } catch (error) {
