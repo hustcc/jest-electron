@@ -9,7 +9,7 @@ import { delay } from '../../utils/delay';
  * electron 的进程池子
  */
 export class Electron {
-  private interactive: boolean;
+  private debugMode: boolean;
   private concurrency: number;
 
   private onCloseCallback: Function = () => {};
@@ -19,8 +19,8 @@ export class Electron {
   // 创建锁
   private lock: boolean = false;
 
-  constructor(interactive: boolean = false, concurrency: number = 1) {
-    this.interactive = interactive;
+  constructor(debugMode: boolean = false, concurrency: number = 1) {
+    this.debugMode = debugMode;
     this.concurrency = concurrency;
   }
 
@@ -65,10 +65,9 @@ export class Electron {
         electron as any,
         args,
         {
-          stdio: ['inherit', 'ipc', process.stderr],
+          stdio: ['ipc'],
           env: {
-            ...process.env,
-            INTERACTIVE: this.interactive ? 'true' : '',
+            DEBUG_MODE: this.debugMode ? 'true' : '',
             CONCURRENCY: `${this.concurrency}`,
           }
         }

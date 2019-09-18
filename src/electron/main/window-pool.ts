@@ -16,15 +16,15 @@ export class WindowPool {
 
   private pool: Info[] = [];
   private maxSize: number;
-  private interactive: boolean;
+  private debugMode: boolean;
 
   // 创建 browser window 的锁标记
   private locked = false;
 
-  constructor(maxSize: number = 1, interactive: boolean = false) {
-    // interactive 模式下，只能开一个 win
-    this.maxSize = interactive ? 1 : maxSize;
-    this.interactive = interactive;
+  constructor(maxSize: number = 1, debugMode: boolean = false) {
+    // debugMode 模式下，只能开一个 win
+    this.maxSize = debugMode ? 1 : maxSize;
+    this.debugMode = debugMode;
   }
 
   /**
@@ -82,8 +82,8 @@ export class WindowPool {
         // 默认大小，应该需要可以定制
         height: 600,
         width: 800,
-        show: this.interactive,
-        focusable: this.interactive,
+        show: this.debugMode,
+        focusable: this.debugMode,
         webPreferences: {
           webSecurity: false,
           nodeIntegration: true,
@@ -106,14 +106,14 @@ export class WindowPool {
       });
 
       const f = url.format({
-        hash: encodeURIComponent(JSON.stringify({ interactive: this.interactive })),
+        hash: encodeURIComponent(JSON.stringify({ debugMode: this.debugMode })),
         pathname: path.join(__dirname, '/index.html'),
         protocol: 'file:',
         slashes: true,
       });
       win.loadURL(f);
 
-      if (this.interactive) {
+      if (this.debugMode) {
         // 打开控制台
         win.webContents.openDevTools();
       }

@@ -4,7 +4,7 @@ import { EventsEnum } from '../../utils/constant';
 import { getResolver, fail } from './uitl';
 
 export type Args = {
-  readonly interactive?: boolean;
+  readonly debugMode?: boolean;
 }
 
 // 通过 hash 将配置传递过来
@@ -14,9 +14,9 @@ try {
   args = JSON.parse(decodeURIComponent(window.location.hash.slice(1)));
 } catch(e) {}
 
-const interactive = args.interactive;
+const debugMode = args.debugMode;
 
-if (interactive) {
+if (debugMode) {
   console.log(`👏 Jest-Electron is Running...`);
 }
 

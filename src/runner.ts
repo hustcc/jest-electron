@@ -1,8 +1,8 @@
 import throat from 'throat';
 import { Electron } from './electron/proc';
 
-const isInteractive = (): boolean => {
-  return process.env.INTERACTIVE === '1';
+const isDebugMode = (): boolean => {
+  return process.env.DEBUG_MODE === '1';
 };
 
 /**
@@ -10,13 +10,13 @@ const isInteractive = (): boolean => {
  */
 export default class ElectronRunner {
   private _globalConfig: any;
-  private _interactive: boolean;
+  private _debugMode: boolean;
 
   private electronProc: Electron;
 
   constructor(globalConfig: any) {
     this._globalConfig = globalConfig;
-    this._interactive = isInteractive();
+    this._debugMode = isDebugMode();
   }
 
   private getConcurrency(testSize): number {
@@ -37,14 +37,14 @@ export default class ElectronRunner {
   ) {
     const concurrency = this.getConcurrency(tests.length);
     // 启动
-    this.electronProc = new Electron(this._interactive, concurrency);
+    this.electronProc = new Electron(this._debugMode, concurrency);
 
     // 主进程退出，则 electron 也退出
     process.on('exit', () => {
       this.electronProc.kill();
     });
 
-    if (this._interactive) {
+    if (this._debugMode) {
       this.electronProc.onClose(() => { process.exit(); });
     }
 
@@ -73,7 +73,7 @@ export default class ElectronRunner {
     );
 
     // 如果是非交互，则关闭子进程
-    if (!this._interactive) {
+    if (!this._debugMode) {
       this.electronProc.kill();
     }
   }

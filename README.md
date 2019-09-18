@@ -59,11 +59,11 @@ script:
 
 ## Debugger mode
 
-Keep the electron browser window for debugging. set env `INTERACTIVE=1`.
+Keep the electron browser window for debugging. set env `DEBUG_MODE=1`.
 
 
 ```bash
-INTERACTIVE=1 jest
+DEBUG_MODE=1 jest
 ```
 
 
