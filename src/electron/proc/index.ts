@@ -65,8 +65,9 @@ export class Electron {
         electron as any,
         args,
         {
-          stdio: ['ipc'],
+          stdio: ['inherit', 'ipc'],
           env: {
+            ...process.env,
             DEBUG_MODE: this.debugMode ? 'true' : '',
             CONCURRENCY: `${this.concurrency}`,
           }
