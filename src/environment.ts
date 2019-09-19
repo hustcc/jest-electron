@@ -1,6 +1,10 @@
 import { FakeTimers, installCommonGlobals } from 'jest-util';
 import * as mock from 'jest-mock';
 
+function isDebugMode() {
+  return !!process.env.DEBUG_MODE;
+}
+
 // env for electron
 // code here https://github.com/facebook-atom/jest-electron-runner/blob/master/packages/electron/src/Environment.js
 export default class ElectronEnvironment {
@@ -14,19 +18,21 @@ export default class ElectronEnvironment {
     this.electronWindowConsole = global.console;
     this.global = global;
 
-    // defineProperty multi-times will throw
-    try {
-      // 因为 jest runTest 中会强制设置 console，覆盖掉 electron 的 console 实例
-      // https://github.com/facebook/jest/blob/6e6a8e827bdf392790ac60eb4d4226af3844cb15/packages/jest-runner/src/runTest.ts#L153
-      Object.defineProperty(this.global, 'console', {
-        get: () => {
-          return this.electronWindowConsole;
-        },
-        set: () => {/* do nothing. */},
-      });
+    if (isDebugMode()) {
+      // defineProperty multi-times will throw
+      try {
+        // 因为 jest runTest 中会强制设置 console，覆盖掉 electron 的 console 实例
+        // https://github.com/facebook/jest/blob/6e6a8e827bdf392790ac60eb4d4226af3844cb15/packages/jest-runner/src/runTest.ts#L153
+        Object.defineProperty(this.global, 'console', {
+          get: () => {
+            return this.electronWindowConsole;
+          },
+          set: () => {/* do nothing. */},
+        });
 
-      installCommonGlobals(this.global, config.globals);
-    } catch (e) {}
+        installCommonGlobals(this.global, config.globals);
+      } catch (e) {}
+    }
 
     this.moduleMocker = new mock.ModuleMocker(global);
     this.fakeTimers = {
