@@ -5,12 +5,16 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { EventsEnum } from '../../utils/constant';
 import { delay } from '../../utils/delay';
 import { uuid } from '../../utils/uuid';
+import { Config } from '../../utils/config';
 
 type Info = {
   win: BrowserWindow;
   idle: boolean;
   tests: any[];
 }
+
+// 存储用户配置
+const config = new Config(app.getPath('userData'));
 
 /**
  * browser window (renderer) 的进程池子
@@ -86,9 +90,8 @@ export class WindowPool {
   private async create(): Promise<BrowserWindow> {
     return new Promise((resolve, reject) => {
       const winOpts = {
-        // 默认大小，应该需要可以定制
-        height: 800,
-        width: 1024,
+        // 从配置读取大小
+        ...config.read(),
         show: this.debugMode,
         focusable: this.debugMode,
         webPreferences: {
@@ -102,8 +105,9 @@ export class WindowPool {
 
       // 关闭之前事件
       win.on('close', () => {
-        // 可以保存之前的窗口大小
-        // console.log(win.getBounds());
+        // 保存之前的窗口大小
+        const { width, height } = win.getBounds();
+        config.write({ width, height });
       });
 
       // 关闭之后
