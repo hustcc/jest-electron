@@ -2,25 +2,29 @@
 
 > Easiest way to run jest unit test cases in electron.
 
+When we run unit test in Jest, it is actually running in the node environment, or virtual browser environment(e.g. `JSDOM`) mocked by NodeJS. Sometimes we need a lot of [Jest mocks](https://github.com/jest-community/awesome-jest#mocks) for running code with no throw, such as: jest-canvas-mock, jest-storage-mock, @jest/fake-timers and so on. This is solved by `Jest-Electron`.
 
 [![Build Status](https://travis-ci.org/hustcc/jest-electron.svg?branch=master)](https://travis-ci.org/hustcc/jest-electron)
 [![npm](https://img.shields.io/npm/v/jest-electron.svg)](https://www.npmjs.com/package/jest-electron)
 [![npm](https://img.shields.io/npm/dm/jest-electron.svg)](https://www.npmjs.com/package/jest-electron)
 
 
+1. Technological ecology of `Jest`.
+2. Complete and real `browser environment`.
+3. `Multi-renderer` for running performance.
+4. `Running and debug` is better then mock.
 
-## Usage
+
+## Installation
 
 
- - Install
+ - Add into devDependencies
 
 ```bash
 npm i --save-dev jest-electron
 ```
 
-- Add to Jest config
-
-In your `package.json`
+ - Update Jest config
 
 ```diff
 {
@@ -33,7 +37,11 @@ In your `package.json`
 
 **Notice**: update the `runner` configure, not `testRunner`.
 
- - Update `.travis.yml`
+
+
+## Travis ci
+
+Update `.travis.yml` with electron supported.
  
 ```diff
 language: node_js
