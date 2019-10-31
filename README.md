@@ -4,7 +4,7 @@
 
 When we run unit test in Jest, it is actually running in the node environment, or virtual browser environment(e.g. `JSDOM`) mocked by NodeJS. Sometimes we need a lot of [Jest mocks](https://github.com/jest-community/awesome-jest#mocks) for running code with no throw, such as: jest-canvas-mock, jest-storage-mock, @jest/fake-timers and so on. This is solved by `Jest-Electron`.
 
-[![Build Status](https://travis-ci.org/hustcc/jest-electron.svg?branch=master)](https://travis-ci.org/hustcc/jest-electron)
+[![Build Status](https://github.com/hustcc/jest-electron/workflows/build/badge.svg)](https://github.com/hustcc/jest-electron/actions)
 [![npm](https://img.shields.io/npm/v/jest-electron.svg)](https://www.npmjs.com/package/jest-electron)
 [![npm](https://img.shields.io/npm/dm/jest-electron.svg)](https://www.npmjs.com/package/jest-electron)
 
