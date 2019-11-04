@@ -39,7 +39,18 @@ npm i --save-dev jest-electron
 
 
 
-## Travis ci
+## GitHub Action
+
+Running on `macOS` will be ok.
+
+
+```diff
+- runs-on: ubuntu-latest
++ runs-on: macOS-latest
+```
+
+
+## Travis
 
 Update `.travis.yml` with electron supported.
  
