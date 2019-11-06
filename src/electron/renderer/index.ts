@@ -6,7 +6,7 @@ export type Args = {
   readonly debugMode?: boolean;
 }
 
-// 通过 hash 将配置传递过来
+// pass the args by url hash
 let args: Args = {};
 
 try {
@@ -19,7 +19,7 @@ if (debugMode) {
   console.log(`👏 Jest-Electron is Running...`);
 }
 
-// 开始跑单测
+// listen and running test case
 ipcRenderer.on(EventsEnum.StartRunTest, async (event, test, id) => {
   try {
     const result = await run(test);
@@ -39,5 +39,5 @@ ipcRenderer.on(EventsEnum.StartRunTest, async (event, test, id) => {
   }
 });
 
-// 加载完成
+// web contents ready
 ipcRenderer.send(EventsEnum.WebContentsReady);

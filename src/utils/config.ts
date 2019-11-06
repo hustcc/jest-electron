@@ -14,13 +14,13 @@ type IConfig = {
 }
 
 /**
- * 存储配置类
+ * configure saver class
  */
 export class Config {
 
-  // 存储目录
+  // save dir
   private dir: string;
-  // 缓存配置
+  // save configure
   private config: IConfig;
 
   constructor(dir: string) {
@@ -28,7 +28,7 @@ export class Config {
   }
 
   /**
-   * 获得存储的文件
+   * get the configure save file path
    */
   private getConfigPath(): string {
     return path.resolve(this.dir, CONFIG_FILE);
@@ -43,7 +43,7 @@ export class Config {
   }
 
   /**
-   * 读配置
+   * get the configure of file
    */
   read(): IConfig {
     if (!this.config) {
@@ -54,7 +54,7 @@ export class Config {
   }
 
   /**
-   * 写配置
+   * write configure into file
    * @param config
    * @param flush
    */

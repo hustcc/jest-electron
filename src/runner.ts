@@ -7,7 +7,7 @@ const isDebugMode = (): boolean => {
 
 
 /**
- * Runner 类
+ * Runner class
  */
 export default class ElectronRunner {
   private _globalConfig: any;
@@ -39,7 +39,7 @@ export default class ElectronRunner {
     electronProc.debugMode = this._debugMode;
     electronProc.concurrency = concurrency;
 
-    // 主进程退出，则 electron 也退出
+    // when the process exit, kill then electron
     process.on('exit', () => {
       electronProc.kill();
     });
@@ -74,7 +74,7 @@ export default class ElectronRunner {
       ),
     );
 
-    // 如果是非交互，则关闭子进程
+    // not debug mode, then kill electron after running test cases
     if (!this._debugMode) {
       electronProc.kill();
     }

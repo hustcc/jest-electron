@@ -56,7 +56,7 @@ export const fail = (testPath: string, err: Error, config: any, globalConfig: an
 };
 
 /**
- * 运行单测
+ * run test case with runTest method of jest
  * @param test
  */
 export async function run(test) {
