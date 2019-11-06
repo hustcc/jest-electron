@@ -5,19 +5,19 @@ import { WindowPool } from './window-pool';
 const debugMode = !!process.env.DEBUG_MODE;
 const concurrency = Number(process.env.CONCURRENCY);
 
-// 所有窗口关闭，则整个退出
+// all browser window closed, then kill the while application
 app.on('window-all-closed', () => {
   app.quit();
 });
 
 app.on('ready', () => {
-  // 新建 window pool 实例
+  // create a window pool instance
   const windowPool = new WindowPool(concurrency, debugMode);
 
-  // 转发测试数据，转发测试结果
+  // redirect the test cases data, and redirect test result after running in electron
   process.on(EventsEnum.ProcMessage, ({ test, id, type }) => {
     if (type === EventsEnum.ProcRunTest) {
-      // 发送到 render 中执行单测
+      // send test data into render proc for running
       windowPool.runTest(id, test).then(({ result, id }) => {
         process.send({ result, id, type: EventsEnum.ProcRunTestResult });
       });

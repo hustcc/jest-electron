@@ -21,7 +21,7 @@ export default class ElectronEnvironment {
     if (isDebugMode()) {
       // defineProperty multi-times will throw
       try {
-        // 因为 jest runTest 中会强制设置 console，覆盖掉 electron 的 console 实例
+        // because of jest will set the console in runTest force, so we should override the console instance of electron
         // https://github.com/facebook/jest/blob/6e6a8e827bdf392790ac60eb4d4226af3844cb15/packages/jest-runner/src/runTest.ts#L153
         Object.defineProperty(this.global, 'console', {
           get: () => {

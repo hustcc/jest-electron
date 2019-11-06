@@ -6,7 +6,7 @@ import { uuid } from '../../utils/uuid';
 import { delay } from '../../utils/delay';
 
 /**
- * electron 的进程池子
+ * electron proc
  */
 export class Electron {
   public debugMode: boolean;
@@ -16,7 +16,7 @@ export class Electron {
 
   private proc: any;
 
-  // 创建锁
+  // thread lock
   private lock: boolean = false;
 
   constructor(debugMode: boolean = false, concurrency: number = 1) {
@@ -25,12 +25,12 @@ export class Electron {
   }
 
   /**
-   * 获取进程
+   * get a idle electron with lock
    */
   private async get(): Promise<any> {
     if (!this.proc) {
 
-      // 锁定状态，延迟获取
+      // lock, then delay and retry
       if (this.lock) {
         await delay();
         return await this.get();
@@ -39,9 +39,8 @@ export class Electron {
       this.lock = true;
       this.proc = await this.create();
 
-      // 关闭的时候，移除
+      // when proc close, kill all electrons
       this.proc.on('close', () => {
-        // 杀掉
         this.kill();
 
         this.onCloseCallback();
@@ -53,11 +52,11 @@ export class Electron {
   }
 
   /**
-   * 创建一个可用的 proc
+   * create an idle electron proc
    */
   private async create(): Promise<any> {
     return new Promise((resolve, reject) => {
-      // 使用 entry 启动
+      // electron starter
       const entry = path.join(__dirname, '../main/index');
       const args = [ entry ];
 
@@ -82,13 +81,13 @@ export class Electron {
         }
       };
 
-      // proc 准备就绪
+      // send electron ready signal
       proc.on(EventsEnum.ProcMessage, listener);
     });
   }
 
   /**
-   * 清空所有
+   * kill all electron proc
    */
   public kill() {
     if (this.proc) {
@@ -98,7 +97,7 @@ export class Electron {
   }
 
   /**
-   * 运行单测
+   * run test case
    * @param test
    */
   public runTest(test: any): Promise<any> {
@@ -109,15 +108,15 @@ export class Electron {
         const listener = ({ result, id: resultId, type }) => {
           if (type === EventsEnum.ProcRunTestResult && resultId === id) {
             proc.removeListener(EventsEnum.ProcMessage, listener);
-            // 返回结果
+            // return test result
             resolve(result);
           }
         };
 
-        // 监听检测结果
+        // listen the running result
         proc.on(EventsEnum.ProcMessage, listener);
 
-        // 将 test 数据发送到 main 中
+        // send test data into main thread
         proc.send({ type: EventsEnum.ProcRunTest, test, id });
       });
     });
@@ -142,7 +141,7 @@ export class Electron {
   }
 
   /**
-   * 所有关闭的时候出发回调
+   * when all close, do callback
    * @param cb
    */
   public onClose(cb) {

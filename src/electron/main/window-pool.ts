@@ -13,11 +13,11 @@ type Info = {
   tests: any[];
 }
 
-// 存储用户配置
+// configure save instance
 const config = new Config(app.getPath('userData'));
 
 /**
- * browser window (renderer) 的进程池子
+ * browser window (renderer) pool
  */
 export class WindowPool {
 
@@ -25,11 +25,11 @@ export class WindowPool {
   private maxSize: number;
   private debugMode: boolean;
 
-  // 创建 browser window 的锁标记
+  // create new browser window instance lock flag
   private locked = false;
 
   constructor(maxSize: number = 1, debugMode: boolean = false) {
-    // debugMode 模式下，只能开一个 win
+    // when debug mode, only 1 window can be work
     this.maxSize = debugMode ? 1 : maxSize;
     this.debugMode = debugMode;
 
@@ -39,10 +39,10 @@ export class WindowPool {
   }
 
   /**
-   * 加锁的获取一个进程
+   * get a window with thread lock
    */
   private async get(): Promise<BrowserWindow> {
-    // 锁定的，那么就延迟再试
+    // if locked, delay and retry
     if (this.locked) {
       await delay();
       return await this.get();
@@ -58,39 +58,39 @@ export class WindowPool {
   }
 
   /**
-   * 从池子拿一个进程
+   * get a window from pool, if not exist, create one, if pool is full, wait and retry
    */
   private async getAsync(): Promise<BrowserWindow> {
-    // 找到一个空闲的
+    // find a idle window
     let info: Info = this.pool.find((info) => info.idle);
 
-    // 存在则直接返回
+    // exist ide window, return it for usage
     if (info) return info.win;
 
-    // 不存在空闲
-    // 且已经满了，则等待 1s 中
+    // no idle window
+    // and the pool is full, delay some time
     if (this.isFull()) {
       await delay();
 
       return await this.getAsync();
     }
 
-    // 没有满
+    // pool has space, then create a new window instance
     const win = await this.create();
 
-    // 放入到 pool 中
+    // put it into pool
     this.pool.push({ win, idle: true, tests: [] });
 
     return win;
   }
 
   /**
-   * 创建一个可用的 win
+   * create a valid electron browser window
    */
   private async create(): Promise<BrowserWindow> {
     return new Promise((resolve, reject) => {
       const winOpts = {
-        // 从配置读取大小
+        // read window size from configure file
         ...config.read(),
         show: this.debugMode,
         focusable: this.debugMode,
@@ -100,17 +100,15 @@ export class WindowPool {
         },
       };
 
-      // 创建窗口
       let win = new BrowserWindow(winOpts);
 
-      // 关闭之前事件
+      // when window close, save window size locally
       win.on('close', () => {
-        // 保存之前的窗口大小
         const { width, height } = win.getBounds();
         config.write({ width, height });
       });
 
-      // 关闭之后
+      // after window closed, remove it from pool for gc
       win.on('closed', () => {
         this.removeWin(win);
         win = undefined;
@@ -125,7 +123,7 @@ export class WindowPool {
       win.loadURL(f);
 
       if (this.debugMode) {
-        // 打开控制台
+        // when debug mode, open dev tools
         win.webContents.openDevTools();
       }
 
@@ -137,21 +135,21 @@ export class WindowPool {
   }
 
   /**
-   * pool 中 proc 数量
+   * the proc size of pool
    */
   public size() {
     return this.pool.length;
   }
 
   /**
-   * 是否满了
+   * whether the pool is full
    */
   public isFull() {
     return this.size() >= this.maxSize;
   }
 
   /**
-   * 设置 idle 状态
+   * set the proc idle status
    * @param win
    * @param idle
    */
@@ -168,7 +166,7 @@ export class WindowPool {
   }
 
   /**
-   * 清空单测
+   * clear all the save tests in memory
    */
   public clearSaveTests() {
     this.pool.forEach(info => {
@@ -180,7 +178,7 @@ export class WindowPool {
   private removeWin(win: BrowserWindow) {
     const idx = this.pool.findIndex((info) => info.win = win);
 
-    // 移除
+    // remove from pool by index
     if (idx !== -1) {
       this.pool.splice(idx, 1);
     }
@@ -189,7 +187,7 @@ export class WindowPool {
   }
 
   /**
-   * 运行单测
+   * run test case by send it to renderer
    * @param id
    * @param test
    */
@@ -215,15 +213,15 @@ export class WindowPool {
     return new Promise((resolve, reject) => {
       this.setIdle(win, false);
 
-      // 单测返回之后发送到 proc 中
+      // redirect the test result ti proc
       ipcMain.once(id, (event, result) => {
-        // 执行完成，设置为空闲
+        // test case running end, set the window with idle status
         this.setIdle(win, true);
-        // 返回结果
+        // resolve test result
         resolve({ result, id });
       });
 
-      // 发送过去到 renderer 中执行
+      // send test case into web contents for running
       win.webContents.send(EventsEnum.StartRunTest, test, id);
     });
   }
