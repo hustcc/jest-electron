@@ -64,7 +64,7 @@ export class Electron {
         electron as any,
         args,
         {
-          stdio: ['inherit', 'ipc'],
+          stdio: ['ipc'],
           env: {
             ...process.env,
             DEBUG_MODE: this.debugMode ? 'true' : '',

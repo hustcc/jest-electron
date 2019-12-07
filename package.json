@@ -19,7 +19,7 @@
     "testEnvironment": "./environment",
     "preset": "ts-jest",
     "collectCoverage": true,
-    "testRegex": "(/__tests__/.*\\.(test|spec))\\.ts$",
+    "testRegex": "(/__tests__/.*\\.(test|spec))\\.tsx?$",
     "collectCoverageFrom": [
       "src/**/*.ts"
     ]
@@ -41,8 +41,11 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
+    "@types/react": "^16.9.15",
     "copyfiles": "^2.1.1",
     "jest": "^24.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.6.2"
