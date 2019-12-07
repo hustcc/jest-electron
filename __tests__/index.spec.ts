@@ -9,6 +9,6 @@ describe('jest-electron', () => {
 
     document.body.appendChild(div);
 
-    expect(document.querySelector('div').innerHTML).toBe('hello jest-electron');
+    expect(div.innerHTML).toBe('hello jest-electron');
   });
 });
