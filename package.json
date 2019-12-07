@@ -1,6 +1,6 @@
 {
   "name": "jest-electron",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Easiest way to run jest unit test cases in electron.",
   "main": "index.js",
   "files": [
@@ -12,7 +12,8 @@
     "test-live": "DEBUG_MODE=1 jest",
     "test": "jest",
     "html": "copyfiles -u 1 src/electron/**/*.html lib",
-    "build": "rimraf lib && tsc && npm run html"
+    "build": "rimraf lib && tsc && npm run html",
+    "prepublishOnly": "npm run build"
   },
   "jest": {
     "runner": "./runner",
