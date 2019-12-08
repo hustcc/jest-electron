@@ -11,8 +11,8 @@
   "scripts": {
     "test-live": "DEBUG_MODE=1 jest",
     "test": "jest",
-    "html": "copyfiles -u 1 src/electron/**/*.html lib",
-    "build": "rimraf lib && tsc && npm run html",
+    "cp": "copyfiles -u 1 src/electron/**/*.{html,css} lib",
+    "build": "rimraf lib && tsc && npm run cp",
     "prepublishOnly": "npm run build"
   },
   "jest": {

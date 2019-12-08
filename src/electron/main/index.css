@@ -1,0 +1,91 @@
+#__jest-electron-test-results__ {
+    width: 100%;
+    font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: #888;
+
+    border: 1px dashed #AAA;
+    padding: 8px 0;
+    margin-bottom: 16px;
+}
+
+/*result stat*/
+
+#__jest-electron-test-results-stat__ {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#__jest-electron-test-results-stat__ .stat-item {
+    padding-right: 8px;
+}
+
+#__jest-electron-test-results-stat__ .stat-item span {
+    font-style: italic;
+}
+
+#__jest-electron-test-results-stat__ .stat-item span.red {
+    color: red;
+}
+
+#__jest-electron-test-results-stat__ .stat-item span.green {
+    color: green;
+}
+
+#__jest-electron-test-results-stat__ .stat-item span.black {
+    color: black;
+}
+
+
+/*result list*/
+
+#__jest-electron-test-results-list__ {
+}
+
+#__jest-electron-test-results-list__ .test-result-suit {
+    margin-left: 24px;
+    padding-bottom: 4px;
+}
+
+#__jest-electron-test-results-list__ .test-result-suit .test-result-suit-title {
+    font-size: 16px;
+    padding: 4px 0;
+    color: #444;
+}
+
+#__jest-electron-test-results-list__ .test-result-suit .test-result-suit-results {
+    margin-left: 16px;
+}
+
+#__jest-electron-test-results-list__ .test-result-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#__jest-electron-test-results-list__ .test-result-info .test-result-title {
+    margin-right: 16px;
+}
+
+#__jest-electron-test-results-list__ .test-result-info .test-result-time {
+    color: #AAA;
+}
+
+#__jest-electron-test-results-list__ .test-result-info.failed::before {
+    content: '✖';
+    font-size: 12px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    color: #c00;
+}
+
+#__jest-electron-test-results-list__ .test-result-info.passed::before {
+    content: '✓';
+    font-size: 12px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    color: #00d6b2;
+}

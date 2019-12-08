@@ -171,6 +171,8 @@ export class WindowPool {
   public clearSaveTests() {
     this.pool.forEach(info => {
       info.tests = [];
+      // remove all test result dom
+      info.win.webContents.send(EventsEnum.ClearTestResults);
     });
   }
 
