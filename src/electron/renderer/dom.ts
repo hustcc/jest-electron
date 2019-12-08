@@ -102,7 +102,7 @@ function appendTestResultDOM(r) {
 
     return `<div class="test-result-info ${status}">
         <div class="test-result-title">${title}</div>
-        <div class="test-result-time">${duration} ms</div>
+        <div class="test-result-time">${duration}ms</div>
       </div>`;
   });
 
