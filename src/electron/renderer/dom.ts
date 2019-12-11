@@ -98,12 +98,18 @@ function appendTestResultDOM(r) {
   if (!title) return;
 
   const ts = r.testResults.map((tr) => {
-    const { title, status, duration } = tr;
+    const { title, status, duration, failureMessages } = tr;
+    const code = Array.isArray(failureMessages) ? failureMessages[0] : '';
 
-    return `<div class="test-result-info ${status}">
+    return `<div class="test-result-block">
+      <div class="test-result-info ${status}">
         <div class="test-result-title">${title}</div>
         <div class="test-result-time">${duration}ms</div>
-      </div>`;
+      </div>
+      <div class="test-result-code">
+        <pre><code>${code}</code></pre>
+      </div>
+    </div>`;
   });
 
   const html = `<div class="test-result-suit">
@@ -114,4 +120,22 @@ function appendTestResultDOM(r) {
   </div>`;
 
   $testResults.innerHTML = $testResults.innerHTML + html;
+}
+
+export function bindFailureMessageClickEvent() {
+  document.addEventListener('click', (e) => {
+    try {
+      // @ts-ignore
+      const node = e.target.parentNode;
+      if (node.matches('.test-result-info.failed')) {
+        // failure
+        const codeClassList = node.parentNode.querySelector('.test-result-code').classList;
+
+        // toggle
+        codeClassList.contains('show') ? codeClassList.remove('show') : codeClassList.add('show');
+      }
+    } catch (e) {
+      console.warn(e)
+    }
+  });
 }
