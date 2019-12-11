@@ -1,7 +1,7 @@
 import { ipcRenderer, remote } from 'electron';
 import { EventsEnum } from '../../utils/constant';
 import { fail, run } from './uitl';
-import { addResult, clearResult } from './dom';
+import { addResult, bindFailureMessageClickEvent, clearResult } from './dom';
 
 export type Args = {
   readonly debugMode?: boolean;
@@ -53,4 +53,6 @@ ipcRenderer.on(EventsEnum.ClearTestResults, async (event) => {
 });
 
 // web contents ready
+bindFailureMessageClickEvent(); // bind event
 ipcRenderer.send(EventsEnum.WebContentsReady);
+
