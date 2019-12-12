@@ -100,7 +100,7 @@
 
 #__jest-electron-test-results-list__ .test-result-block .test-result-info.pending::before {
     content: '◔';
-    font-size: 12px;
+    font-size: 16px;
     display: block;
     float: left;
     margin-right: 5px;
