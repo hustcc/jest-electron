@@ -98,6 +98,14 @@
     color: #00d6b2;
 }
 
+#__jest-electron-test-results-list__ .test-result-block .test-result-info.pending::before {
+    content: '◔';
+    font-size: 12px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    color: #f8ac30;
+}
 
 /*failure message*/
 #__jest-electron-test-results-list__ .test-result-block .test-result-code {
