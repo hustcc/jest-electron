@@ -6,4 +6,8 @@ describe('jest-electron', () => {
     await delay();
     expect(name).toBe('jest-electron');
   });
+
+  xtest('skip', () => {
+    expect(1).toBeDefined();
+  });
 });
