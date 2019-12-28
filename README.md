@@ -21,7 +21,7 @@ When we run unit test in Jest, it is actually running in the node environment, o
  - Add into devDependencies
 
 ```bash
-npm i --save-dev jest-electron
+$ npm i --save-dev jest-electron
 ```
 
  - Update Jest config
@@ -39,7 +39,19 @@ npm i --save-dev jest-electron
 
 
 
-## GitHub Action
+## Related
+
+> Those will be helpful when run test case with `jest-electron`.
+
+ - [jest-less-loader](https://github.com/hustcc/jest-less-loader): Run test cases with import `less`, `css` code.
+ - [jest-url-loader](https://github.com/hustcc/jest-url-loader): Run test cases with import `svg`, `png`, `jpg` or other url file..
+
+
+
+## CI
+
+
+### Action
 
 Running on `macOS` will be ok.
 
@@ -50,7 +62,7 @@ Running on `macOS` will be ok.
 ```
 
 
-## Travis
+### Travis
 
 Update `.travis.yml` with electron supported.
  
@@ -76,7 +88,7 @@ script:
 
 
 
-## Debugger mode
+## Debug mode
 
 Keep the electron browser window for debugging. set env `DEBUG_MODE=1`.
 
