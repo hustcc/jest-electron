@@ -59,7 +59,9 @@ export class Electron {
       // electron starter
       const entry = path.join(__dirname, '../main/index');
       const args = [ entry ];
-
+      if (process.env.JEST_ELECTRON_NO_SANDBOX){
+        args.splice(0, 0, '--no-sandbox');
+      };
       const proc = spawn(
         electron as any,
         args,
