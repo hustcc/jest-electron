@@ -50,8 +50,9 @@ $ npm i --save-dev jest-electron
 
 ## CI
 
+> Run test cases with `jest-electron` for continuous integration.
 
-### Action
+ - **GitHub action**
 
 Running on `macOS` will be ok.
 
@@ -62,7 +63,7 @@ Running on `macOS` will be ok.
 ```
 
 
-### Travis
+ - **travis**
 
 Update `.travis.yml` with electron supported.
  
@@ -88,13 +89,25 @@ script:
 
 
 
-## Debug mode
+## Env
 
-Keep the electron browser window for debugging. set env `DEBUG_MODE=1`.
+ - **debug mode**
+
+Keep the electron browser window for debugging, set process env `DEBUG_MODE=1`.
 
 
 ```bash
 DEBUG_MODE=1 jest
+```
+
+
+ - **no sandbox**
+
+Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_NO_SANDBOX=1`.
+
+
+```bash
+JEST_ELECTRON_NO_SANDBOX=1 jest
 ```
 
 
