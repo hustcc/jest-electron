@@ -97,9 +97,14 @@ function appendTestResultDOM(r) {
 
   if (!title) return;
 
+  let code = r.failureMessage ? r.failureMessage : '';
+
   const ts = r.testResults.map((tr) => {
     const { title, status, duration, failureMessages } = tr;
-    const code = Array.isArray(failureMessages) ? failureMessages[0] : '';
+
+    if (!code) {
+      code = Array.isArray(failureMessages) ? failureMessages[0] : '';
+    }
 
     return `<div class="test-result-block">
       <div class="test-result-info ${status}">
