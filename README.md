@@ -87,7 +87,14 @@ script:
   - npm run test
 ```
 
+ - **docker**
 
+Depending on your executor, you might need to disable sandbox and shared memory usage:
+
+```bash
+export JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage --no-sandbox'
+npm run test
+```
 
 ## Env
 
@@ -105,11 +112,17 @@ DEBUG_MODE=1 jest
 
 Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_NO_SANDBOX=1`.
 
-
 ```bash
 JEST_ELECTRON_NO_SANDBOX=1 jest
 ```
 
+ - **additional startup arguments**
+
+Run electron with arbitrary arguments.
+
+```bash
+JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'
+```
 
 
 ## License
