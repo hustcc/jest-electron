@@ -87,8 +87,6 @@ script:
   - npm run test
 ```
 
- - **docker**
-
 Depending on your executor, you might need to disable sandbox and shared memory usage:
 
 ```bash
@@ -107,21 +105,18 @@ Keep the electron browser window for debugging, set process env `DEBUG_MODE=1`.
 DEBUG_MODE=1 jest
 ```
 
-
- - **no sandbox**
-
-Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_NO_SANDBOX=1`.
-
-```bash
-JEST_ELECTRON_NO_SANDBOX=1 jest
-```
-
  - **additional startup arguments**
 
 Run electron with arbitrary arguments.
 
 ```bash
 JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'
+```
+
+Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'`.
+
+```bash
+JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage' jest
 ```
 
 
