@@ -113,10 +113,10 @@ Run electron with arbitrary arguments.
 JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'
 ```
 
-Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'`.
+Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_STARTUP_ARGS='--no-sandbox'`.
 
 ```bash
-JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage' jest
+JEST_ELECTRON_STARTUP_ARGS='--no-sandbox' jest
 ```
 
 
