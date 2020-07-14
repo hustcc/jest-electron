@@ -87,7 +87,12 @@ script:
   - npm run test
 ```
 
+Depending on your executor, you might need to disable sandbox and shared memory usage:
 
+```bash
+export JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage --no-sandbox'
+npm run test
+```
 
 ## Env
 
@@ -100,16 +105,19 @@ Keep the electron browser window for debugging, set process env `DEBUG_MODE=1`.
 DEBUG_MODE=1 jest
 ```
 
+ - **additional startup arguments**
 
- - **no sandbox**
-
-Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_NO_SANDBOX=1`.
-
+Run electron with arbitrary arguments.
 
 ```bash
-JEST_ELECTRON_NO_SANDBOX=1 jest
+JEST_ELECTRON_STARTUP_ARGS='--disable-dev-shm-usage'
 ```
 
+Run electron with `--no-sandbox`, set process env `JEST_ELECTRON_STARTUP_ARGS='--no-sandbox'`.
+
+```bash
+JEST_ELECTRON_STARTUP_ARGS='--no-sandbox' jest
+```
 
 
 ## License

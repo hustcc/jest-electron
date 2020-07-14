@@ -62,6 +62,9 @@ export class Electron {
       if (process.env.JEST_ELECTRON_NO_SANDBOX){
         args.splice(0, 0, '--no-sandbox');
       };
+      if (process.env.JEST_ELECTRON_STARTUP_ARGS){
+        args.splice(0, 0, ...process.env.JEST_ELECTRON_STARTUP_ARGS.split(/\s+/));
+      };
       const proc = spawn(
         electron as any,
         args,
