@@ -14,9 +14,14 @@ export class Electron {
 
   private onCloseCallback: Function = () => {};
 
+  /**
+   * 当前运行的 electron 进程
+   */
   private proc: any;
 
-  // thread lock
+  /**
+   * 在创建进程过程中，进行锁定
+   */
   private lock: boolean = false;
 
   constructor(debugMode: boolean = false, concurrency: number = 1) {
@@ -127,6 +132,9 @@ export class Electron {
     });
   }
 
+  /**
+   * 初始化窗口和应用
+   */
   public initialWin(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.get().then((proc) => {

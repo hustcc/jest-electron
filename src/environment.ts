@@ -1,4 +1,4 @@
-import { FakeTimers, installCommonGlobals } from 'jest-util';
+import { installCommonGlobals } from 'jest-util';
 import * as mock from 'jest-mock';
 
 function isDebugMode() {
