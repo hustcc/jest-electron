@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "electron": "^6.0.7",
+    "electron": "^8.5.5",
     "jest-haste-map": "~24.9.0",
     "jest-message-util": "~24.9.0",
     "jest-mock": "~24.9.0",
