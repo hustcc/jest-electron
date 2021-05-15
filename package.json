@@ -40,7 +40,7 @@
     "tslib": "^1.10.0"
   },
   "peerDependencies": {
-    "jest": "^24.0.0"
+    "jest": "^26.6.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
