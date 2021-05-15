@@ -3,7 +3,7 @@
     "module": "commonjs",
     "declaration": false,
     "sourceMap": false,
-    "target": "es5",
+    "target": "es2019",
     "outDir": "lib",
     "allowSyntheticDefaultImports": true,
     "lib": ["esnext", "dom"],
