@@ -1,12 +1,16 @@
 #__jest-electron-test-results__ {
-    width: 100%;
+    bottom: 0;
+    color: #888;
+    background-color: rgba(255,255,255,0.8);
     font: 20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
-    color: #888;
-
-    border: 1px dashed #AAA;
-    padding: 8px 0;
+    left: 0;
+    margin: 0;
     margin-bottom: 16px;
+    padding: 8px 0;
+    position: fixed;
+    right: 0;
+    width: 100%;
 }
 
 /*result stat*/
@@ -39,9 +43,6 @@
 
 /*result list*/
 
-#__jest-electron-test-results-list__ {
-}
-
 #__jest-electron-test-results-list__ .test-result-suit {
     margin-left: 24px;
     padding-bottom: 4px;
@@ -55,10 +56,6 @@
 
 #__jest-electron-test-results-list__ .test-result-suit .test-result-suit-results {
     margin-left: 16px;
-}
-
-#__jest-electron-test-results-list__ .test-result-block {
-
 }
 
 #__jest-electron-test-results-list__ .test-result-block .test-result-info {
