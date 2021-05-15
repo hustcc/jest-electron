@@ -6,7 +6,9 @@
   "files": [
     "lib",
     "runner.js",
-    "environment.js"
+    "environment.js",
+    "src",
+    "tsconfig.json"
   ],
   "scripts": {
     "test-live": "DEBUG_MODE=1 jest",
