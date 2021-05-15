@@ -36,6 +36,13 @@ export default class ElectronEnvironment {
 
     this.moduleMocker = new mock.ModuleMocker(global);
     this.fakeTimers = {
+      useRealTimers() {
+        return {
+          clearTimeoutFn: global.clearTimeout,
+          setImmediateFn: global.setTimeout,
+          setTimeoutFn: global.setTimeout,
+        }
+      },
       useFakeTimers() {
         throw new Error('fakeTimers are not supported in electron environment');
       },
